@@ -2,6 +2,8 @@
 
 ## Prerequisites
 
+### Wireguard Tunnel on a VPS.
+
 - Provision some VPS (for example, a DigitalOcean droplet) and set up Wireguard with a config similar to [vps.wireguard](./vps.wireguard) under `/etc/wireguard/`.
 
 ```sh
@@ -28,9 +30,13 @@ ping 10.10.10.10
 ping 10.10.10.1
 ```
 
-- Make sure your home server has an NVIDIA GPU available.
+### DNS records
+
+- Setup A records for `movienight.aalekhpatel.com` and `photos.aalekhpatel.com` to the VPS's public IP (`<vps-pub-ip>`) on your domain provider.
 
 ## Start services
+
+- Make sure your home server has an NVIDIA GPU available.
 
 - Spin up two services:
 
@@ -47,7 +53,7 @@ and an nginx reverse proxy that listens at `http://localhost:8002` for requests 
 curl http://localhost:8002 -H 'Host photos.aalekhpatel.com
 ```
 
-## Start reverse proxy on the VPS.
+## Start the reverse proxy on the VPS.
 
 1. Install `nginx` on the VPS.
 
@@ -73,3 +79,6 @@ sudo systemctl start nginx
 > You might need to run `setsebool -P httpd_can_network_connect 1` if there are permission errors in the nginx logs.
 
 
+## Success!
+
+[https://photos.aalekhpatel.com](https://photos.aalekhpatel.com) and [https://movienight.aalekhpatel.com](https://movienight.aalekhpatel.com) should be accessible now.
