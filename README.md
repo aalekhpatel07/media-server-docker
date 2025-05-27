@@ -23,7 +23,7 @@ sudo systemctl start wg-quick@media-server.service
 ```sh
 # on the VPS
 ping 10.10.10.10
-``
+```
 
 ```sh
 # on the home server
