@@ -53,31 +53,30 @@ and an nginx reverse proxy that listens at `http://localhost:8002` for requests 
 curl http://localhost:8002 -H 'Host photos.aalekhpatel.com
 ```
 
-## Start the reverse proxy on the VPS.
+## Setup nftables on the VPS
 
-1. Install `nginx` on the VPS.
-
-```sh
-# on the VPS.
-sudo dnf install -y nginx
-```
-
-2. Copy the contents of [vps.nginx.conf](./vps.nginx.conf) to VPS's `/etc/nginx/nginx.conf`:
+1. Install `nftables` and enable ip forwarding so we can use the VPS's kernel's builtin packet routing framework:
 
 ```sh
-# on the home server.
-scp vps.nginx.conf root@<vps-pub-ip>:/etc/nginx/nginx.conf
+sudo dnf install -y nftables
+sudo systemctl enable nftables
+sudo systemctl start nftables
+echo "net.ipv4.ip_forward=1" >> /etc/sysctl.d/99-ip_forward.conf
+sysctl -p
 ```
 
-3. Enable and start nginx:
+2. Copy the [vps.nftables.conf](./vps.nftables.conf) file to VPS's `/etc/nftables.conf`
 
 ```sh
-sudo systemctl enable nginx
-sudo systemctl start nginx
+scp vps.nftables.conf root@<vps-pub-ip>:/etc/nftables.conf
 ```
 
-> You might need to run `setsebool -P httpd_can_network_connect 1` if there are permission errors in the nginx logs.
+3. Flush and restore the nftables ruleset.
 
+```sh
+nft flush ruleset
+nft -f /etc/nftables.conf
+```
 
 ## Success!
 
