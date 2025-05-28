@@ -34,6 +34,8 @@ ping 10.10.10.1
 
 - Setup A records for `movienight.aalekhpatel.com` and `photos.aalekhpatel.com` to the VPS's public IP (`<vps-pub-ip>`) on your domain provider.
 
+- If your domain provider offers free TLS/SSL then might as well opt-in otherwise you'd have to bolt on that stuff in the nginx running on the docker compose cluster.
+
 ## Start services
 
 - Make sure your home server has an NVIDIA GPU available.
